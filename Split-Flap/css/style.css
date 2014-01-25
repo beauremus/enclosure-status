@@ -28,9 +28,6 @@ body {
   text-align: center;
   color: rgb(255,255,255);
 }
-body:hover {
-  overflow-y: auto;
-}
 h1 {
   text-align: center;
   color: white;
@@ -79,7 +76,7 @@ th {
 .undef {
   color: rgb(255,255,255);
 }
-.closed {
+.noacs {
   color: rgb(255,0,0);
 }
 .open {
@@ -134,7 +131,7 @@ th {
   -moz-border-radius: 5px;
   border-radius: 5px;
   font-size: 26px;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Ubuntu-Bold', sans-serif;
   font-weight: 700;
   text-indent: 0;
   background-color: #000000;
@@ -215,13 +212,13 @@ th {
   src: local('Ubuntu'), url('../fonts/ubuntu.woff');
 }
 @font-face {
-  font-family: 'Ubuntu';
+  font-family: 'Ubuntu-Medium';
   font-style: normal;
   font-weight: 500;
   src: local('Ubuntu-Medium'), url('../fonts/ubuntu-medium.woff');
 }
 @font-face {
-  font-family: 'Ubuntu';
+  font-family: 'Ubuntu-Bold';
   font-style: normal;
   font-weight: 700;
   src: local('Ubuntu-Bold'), url('../fonts/ubuntu-bold.woff');
