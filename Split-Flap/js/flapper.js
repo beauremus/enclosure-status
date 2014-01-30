@@ -22,22 +22,11 @@ function buildTable(json, l, numRows, maxRows){
   table.className = 'wrapper';
   var thead = document.createElement('thead');
   var tbody = document.createElement('tbody');
-  var tr;
-  var tdEnc;
-  var tdStat;
-  var tdElap;
   var filledEnc;
   var filledStat;
   var filledElap;
-  var thEnc = document.createElement('th');
-  var thStat = document.createElement('th');
-  var thElap = document.createElement('th');
-  thEnc.appendChild(document.createTextNode('Enclosure'));
-  thStat.appendChild(document.createTextNode('Status'));
-  thElap.appendChild(document.createTextNode('Elapsed'));
-  thead.appendChild(thEnc);
-  thead.appendChild(thStat);
-  thead.appendChild(thElap);
+  var thRow = '<th>Enclosure</th><th>Status</th><th>Elapsed</th>'
+  thead.innerHTML += thRow;
   for (l; l < numRows; l++)
   {
     if (json[l] != null)
@@ -45,68 +34,40 @@ function buildTable(json, l, numRows, maxRows){
       var jsonStat = json[l];
       var enc = jsonStat.enclosure.name;
       var stat = jsonStat.status.name;
-      tr = document.createElement('tr');
-      tr.id = 'enc';
-      tdEnc = document.createElement('td');
-      tdEnc.className += 'flip-counter enc';
-      tdStat = document.createElement('td');
-      tdStat.className += 'flip-counter stat';
-      tdElap = document.createElement('td');
-      tdElap.className += 'flip-counter elap';
       filledEnc = drawLetter(fillSpace(enc,'enc').toUpperCase());
       filledStat = drawLetter(fillSpace(stat,'stat').toUpperCase());
       var changeDate = new Date(jsonStat.modifiedDate);
       filledElap = drawLetter(fillSpace(getElapsed(changeDate),'elap').toUpperCase());
-      tdEnc.innerHTML = filledEnc;
-      tdStat.innerHTML = filledStat;
-      tdElap.innerHTML = filledElap;
-      tr.appendChild(tdEnc);
-      tdStat.className += colorCode(stat);
-      tr.appendChild(tdStat);
-      tr.appendChild(tdElap);
-      tbody.appendChild(tr);
+      var row = '<tr id="enc">'+
+                  '<td class="flip-counter enc">'+filledEnc+'</td>'+
+                  '<td class="flip-counter stat'+colorCode(stat)+'">'+filledStat+'</td>'+
+                  '<td class="flip-counter elap">'+filledElap+'</td>'+
+                '</tr>';
+      tbody.innerHTML += row;
     } else {
-      tr = document.createElement('tr');
-      tr.id = 'spaces';
-      tdEnc = document.createElement('td');
-      tdEnc.className += 'flip-counter enc';
-      tdStat = document.createElement('td');
-      tdStat.className += 'flip-counter stat';
-      tdElap = document.createElement('td');
-      tdElap.className += 'flip-counter elap';
       filledEnc = drawLetter(fillSpace('','enc').toUpperCase());
       filledStat = drawLetter(fillSpace('','stat').toUpperCase());
       filledElap = drawLetter(fillSpace('','elap').toUpperCase());
-      tdEnc.innerHTML = filledEnc;
-      tdStat.innerHTML = filledStat;
-      tdElap.innerHTML = filledElap;
-      tr.appendChild(tdEnc);
-      tr.appendChild(tdStat);
-      tr.appendChild(tdElap);
-      tbody.appendChild(tr);
+      var row = '<tr id="spaces">'+
+                  '<td class="flip-counter enc">'+filledEnc+'</td>'+
+                  '<td class="flip-counter stat">'+filledStat+'</td>'+
+                  '<td class="flip-counter elap">'+filledElap+'</td>'+
+                '</tr>';
+      tbody.innerHTML += row;
     }
   }
   var space = Math.ceil(json.length / (Math.ceil(json.length / maxRows)));
   for (var m = 0; m < maxRows-space; m++)
   {
-    tr = document.createElement('tr');
-    tr.id = 'spaces';
-    tdEnc = document.createElement('td');
-    tdEnc.className += 'flip-counter enc';
-    tdStat = document.createElement('td');
-    tdStat.className += 'flip-counter stat';
-    tdElap = document.createElement('td');
-    tdElap.className += 'flip-counter elap';
     filledEnc = drawLetter(fillSpace('','enc').toUpperCase());
     filledStat = drawLetter(fillSpace('','stat').toUpperCase());
     filledElap = drawLetter(fillSpace('','elap').toUpperCase());
-    tdEnc.innerHTML = filledEnc;
-    tdStat.innerHTML = filledStat;
-    tdElap.innerHTML = filledElap;
-    tr.appendChild(tdEnc);
-    tr.appendChild(tdStat);
-    tr.appendChild(tdElap);
-    tbody.appendChild(tr);
+    var row = '<tr id="spaces">'+
+                '<td class="flip-counter enc">'+filledEnc+'</td>'+
+                '<td class="flip-counter stat">'+filledStat+'</td>'+
+                '<td class="flip-counter elap">'+filledElap+'</td>'+
+              '</tr>';
+    tbody.innerHTML += row;
   }
   table.appendChild(thead);
   table.appendChild(tbody);
@@ -120,9 +81,12 @@ function drawLetter(span){
   for (var i = 0; i < letters.length; i++)
   {
     html += '<li class="digit">'+
-      '<div class="line"></div>'+
-      '<span class="front">'+letters[i]+'</span>'+
-      '</li>';
+            '<div class="line"></div>'+
+            '<span class="back">'+letters[i]+'</span>'+
+            '<div class="hinge">'+
+            '<span class="front">'+letters[i]+'</span>'+
+            '</div>'+
+            '</li>';
   }
   return html;
 }
