@@ -18,19 +18,26 @@ function parseTable(json){
 }
 
 function buildTable(json, l, numRows, maxRows){
-  var $table = $(document.createElement('table')).addClass('wrapper');
-  var $thead = $(document.createElement('thead'));
-  var $tbody = $(document.createElement('tbody'));
-  var $tr;
-  var $tdEnc;
-  var $tdStat;
-  var $tdElap;
+  var table = document.createElement('table');
+  table.className = 'wrapper';
+  var thead = document.createElement('thead');
+  var tbody = document.createElement('tbody');
+  var tr;
+  var tdEnc;
+  var tdStat;
+  var tdElap;
   var filledEnc;
   var filledStat;
   var filledElap;
-  $table.append($thead);
-  var header = '<th>Enclosure</th><th>Status</th><th>Elapsed</th>';
-  $thead.append(header);
+  var thEnc = document.createElement('th');
+  var thStat = document.createElement('th');
+  var thElap = document.createElement('th');
+  thEnc.appendChild(document.createTextNode('Enclosure'));
+  thStat.appendChild(document.createTextNode('Status'));
+  thElap.appendChild(document.createTextNode('Elapsed'));
+  thead.appendChild(thEnc);
+  thead.appendChild(thStat);
+  thead.appendChild(thElap);
   for (l; l < numRows; l++)
   {
     if (json[l] != null)
@@ -38,59 +45,72 @@ function buildTable(json, l, numRows, maxRows){
       var jsonStat = json[l];
       var enc = jsonStat.enclosure.name;
       var stat = jsonStat.status.name;
-      $tr = $(document.createElement('tr')).attr('id',enc);
-      $tdEnc = $(document.createElement('td')).addClass('flip-counter enc');
-      $tdStat = $(document.createElement('td')).addClass('flip-counter stat');
-      $tdElap = $(document.createElement('td')).addClass('flip-counter elap');
-      filledEnc = fillSpace(enc,'enc');
-      filledStat = fillSpace(stat,'stat');
+      tr = document.createElement('tr');
+      tr.id = 'enc';
+      tdEnc = document.createElement('td');
+      tdEnc.className += 'flip-counter enc';
+      tdStat = document.createElement('td');
+      tdStat.className += 'flip-counter stat';
+      tdElap = document.createElement('td');
+      tdElap.className += 'flip-counter elap';
+      filledEnc = drawLetter(fillSpace(enc,'enc').toUpperCase());
+      filledStat = drawLetter(fillSpace(stat,'stat').toUpperCase());
       var changeDate = new Date(jsonStat.modifiedDate);
-      filledElap = fillSpace(getElapsed(changeDate),'elap');
-      $tdEnc.append(drawLetter(filledEnc.toUpperCase()));
-      $tdStat.append(drawLetter(filledStat.toUpperCase()));
-      $tdElap.append(drawLetter(filledElap.toUpperCase()));
-      $tr.append($tdEnc);
-      $tdStat.addClass(colorCode(stat));
-      $tr.append($tdStat);
-      $tr.append($tdElap);
-      $tbody.append($tr);
+      filledElap = drawLetter(fillSpace(getElapsed(changeDate),'elap').toUpperCase());
+      tdEnc.innerHTML = filledEnc;
+      tdStat.innerHTML = filledStat;
+      tdElap.innerHTML = filledElap;
+      tr.appendChild(tdEnc);
+      tdStat.className += colorCode(stat);
+      tr.appendChild(tdStat);
+      tr.appendChild(tdElap);
+      tbody.appendChild(tr);
     } else {
-      $tr = $(document.createElement('tr')).attr('id','spaces');
-      $tdEnc = $(document.createElement('td')).addClass('flip-counter enc');
-      $tdStat = $(document.createElement('td')).addClass('flip-counter stat');
-      $tdElap = $(document.createElement('td')).addClass('flip-counter elap');
-      filledEnc = fillSpace('','enc');
-      filledStat = fillSpace('','stat');
-      filledElap = fillSpace('','elap');
-      $tdEnc.append(drawLetter(filledEnc.toUpperCase()));
-      $tdStat.append(drawLetter(filledStat.toUpperCase()));
-      $tdElap.append(drawLetter(filledElap.toUpperCase()));
-      $tr.append($tdEnc);
-      $tr.append($tdStat);
-      $tr.append($tdElap);
-      $tbody.append($tr);
+      tr = document.createElement('tr');
+      tr.id = 'spaces';
+      tdEnc = document.createElement('td');
+      tdEnc.className += 'flip-counter enc';
+      tdStat = document.createElement('td');
+      tdStat.className += 'flip-counter stat';
+      tdElap = document.createElement('td');
+      tdElap.className += 'flip-counter elap';
+      filledEnc = drawLetter(fillSpace('','enc').toUpperCase());
+      filledStat = drawLetter(fillSpace('','stat').toUpperCase());
+      filledElap = drawLetter(fillSpace('','elap').toUpperCase());
+      tdEnc.innerHTML = filledEnc;
+      tdStat.innerHTML = filledStat;
+      tdElap.innerHTML = filledElap;
+      tr.appendChild(tdEnc);
+      tr.appendChild(tdStat);
+      tr.appendChild(tdElap);
+      tbody.appendChild(tr);
     }
   }
   var space = Math.ceil(json.length / (Math.ceil(json.length / maxRows)));
   for (var m = 0; m < maxRows-space; m++)
   {
-    $tr = $(document.createElement('tr')).attr('id','spaces');
-    $tdEnc = $(document.createElement('td')).addClass('flip-counter enc');
-    $tdStat = $(document.createElement('td')).addClass('flip-counter stat');
-    $tdElap = $(document.createElement('td')).addClass('flip-counter elap');
-    filledEnc = fillSpace('','enc');
-    filledStat = fillSpace('','stat');
-    filledElap = fillSpace('','elap');
-    $tdEnc.append(drawLetter(filledEnc.toUpperCase()));
-    $tdStat.append(drawLetter(filledStat.toUpperCase()));
-    $tdElap.append(drawLetter(filledElap.toUpperCase()));
-    $tr.append($tdEnc);
-    $tr.append($tdStat);
-    $tr.append($tdElap);
-    $tbody.append($tr);
+    tr = document.createElement('tr');
+    tr.id = 'spaces';
+    tdEnc = document.createElement('td');
+    tdEnc.className += 'flip-counter enc';
+    tdStat = document.createElement('td');
+    tdStat.className += 'flip-counter stat';
+    tdElap = document.createElement('td');
+    tdElap.className += 'flip-counter elap';
+    filledEnc = drawLetter(fillSpace('','enc').toUpperCase());
+    filledStat = drawLetter(fillSpace('','stat').toUpperCase());
+    filledElap = drawLetter(fillSpace('','elap').toUpperCase());
+    tdEnc.innerHTML = filledEnc;
+    tdStat.innerHTML = filledStat;
+    tdElap.innerHTML = filledElap;
+    tr.appendChild(tdEnc);
+    tr.appendChild(tdStat);
+    tr.appendChild(tdElap);
+    tbody.appendChild(tr);
   }
-  $table.append($tbody);
-  $(flaps).append($table);
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  $(flaps).append(table);
   return l;
 }
 
@@ -182,6 +202,22 @@ function getElapsed(changeTime){
   return elapTime;
 }
 
+function colorCode(statName) {
+  switch (statName)
+  {
+    case 'Undefined':
+      return ' undef';
+    case 'Controlled':
+      return ' cntrl';
+    case 'Supervised':
+      return ' super';
+    case 'Open':
+      return ' open';
+    case 'No Access':
+      return ' noacs';
+  }
+}
+
 function getStatus() {
   $.ajax(
   {
@@ -221,20 +257,4 @@ function getStatus() {
       setTimeout('getStatus()',10000);
     }
   });
-}
-
-function colorCode(statName) {
-  switch (statName)
-  {
-    case 'Undefined':
-      return 'undef';
-    case 'Controlled':
-      return 'cntrl';
-    case 'Supervised':
-      return 'super';
-    case 'Open':
-      return 'open';
-    case 'No Access':
-      return 'noacs';
-  }
 }

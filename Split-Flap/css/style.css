@@ -15,7 +15,7 @@ table, tbody, thead, tr, th, td {
 .clearfix:before,
 .clearfix:after {
   display: table;
-  /*content: "";*/
+  content: "";
   line-height: 0;
 }
 .clearfix:after {
@@ -216,20 +216,17 @@ center {
   font-family: 'Ubuntu';
   font-style: normal;
   font-weight: normal;
-  /*font-weight: 400;*/
   src: local('Ubuntu'), url('../fonts/ubuntu.woff') format('woff');
 }
 @font-face {
   font-family: 'Ubuntu-Medium';
   font-style: normal;
   font-weight: normal;
-  /*font-weight: 500;*/
   src: local('Ubuntu-Medium'), url('../fonts/ubuntu-medium.woff') format('woff');
 }
 @font-face {
   font-family: 'Ubuntu-Bold';
   font-style: normal;
   font-weight: normal;
-  /*font-weight: 700;*/
   src: local('Ubuntu-Bold'), url('../fonts/ubuntu-bold.woff') format('woff');
 }
