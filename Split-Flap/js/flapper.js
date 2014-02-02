@@ -1,77 +1,75 @@
 var globalJson;
+var totRows = 27; //Set number of rows in each column
+var totCols = 2; //Set number of columns
 
 $(document).ready(function(){
+  buildTable();
   getStatus();
 });
 
-function parseTable(json){
+function buildTable(){
   $(flaps).html('');
-  var maxRows = 27;
-  var jsonLength = json.length;
-  var numCols = Math.ceil(jsonLength / maxRows);
-  var numRows = Math.ceil(jsonLength / numCols);
-  var rowsOne = numRows;
-  var rowsTwo = numRows + rowsOne;
-  var l = 0;
-  l = buildTable(json, l, rowsOne, maxRows);
-  buildTable(json, l, rowsTwo, maxRows);
-}
-
-function buildTable(json, l, numRows, maxRows){
-  var table = document.createElement('table');
-  table.className = 'wrapper';
-  var thead = document.createElement('thead');
-  var tbody = document.createElement('tbody');
-  var filledEnc;
-  var filledStat;
-  var filledElap;
-  var thRow = '<th>Enclosure</th><th>Status</th><th>Elapsed</th>'
-  thead.innerHTML += thRow;
-  for (l; l < numRows; l++)
+  for (var tC = 0; tC < totCols; tC++)
   {
-    if (json[l] != null)
+    var table = document.createElement('table');
+    table.className = 'wrapper';
+    var thead = document.createElement('thead');
+    var tbody = document.createElement('tbody');
+    var thRow = '<th>Enclosure</th><th>Status</th><th>Elapsed</th>';
+    thead.innerHTML += thRow;
+    for (var tR = 0; tR < totRows; tR++)
     {
-      var jsonStat = json[l];
-      var enc = jsonStat.enclosure.name;
-      var stat = jsonStat.status.name;
-      filledEnc = drawLetter(fillSpace(enc,'enc').toUpperCase());
-      filledStat = drawLetter(fillSpace(stat,'stat').toUpperCase());
-      var changeDate = new Date(jsonStat.modifiedDate);
-      filledElap = drawLetter(fillSpace(getElapsed(changeDate),'elap').toUpperCase());
-      var row = '<tr id="enc">'+
-                  '<td class="flip-counter enc">'+filledEnc+'</td>'+
-                  '<td class="flip-counter stat'+colorCode(stat)+'">'+filledStat+'</td>'+
-                  '<td class="flip-counter elap">'+filledElap+'</td>'+
-                '</tr>';
-      tbody.innerHTML += row;
-    } else {
-      filledEnc = drawLetter(fillSpace('','enc').toUpperCase());
-      filledStat = drawLetter(fillSpace('','stat').toUpperCase());
-      filledElap = drawLetter(fillSpace('','elap').toUpperCase());
-      var row = '<tr id="spaces">'+
+      var filledEnc = drawLetter(fillSpace('','enc'));
+      var filledStat = drawLetter(fillSpace('','stat'));
+      var filledElap = drawLetter(fillSpace('','elap'));
+      var row = '<tr id="col'+tC+'row'+tR+'">'+
                   '<td class="flip-counter enc">'+filledEnc+'</td>'+
                   '<td class="flip-counter stat">'+filledStat+'</td>'+
                   '<td class="flip-counter elap">'+filledElap+'</td>'+
                 '</tr>';
       tbody.innerHTML += row;
     }
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    $(flaps).append(table);
   }
-  var space = Math.ceil(json.length / (Math.ceil(json.length / maxRows)));
-  for (var m = 0; m < maxRows-space; m++)
+}
+
+function parseStatus(json){
+  var jsonLength = json.length;
+  var numRows = Math.ceil(jsonLength / totCols);
+  var rowsOne = numRows;
+  var rowsTwo = numRows + rowsOne;
+  var l = 0;
+  l = fillTable(json, l, rowsOne, 0);
+  fillTable(json, l, rowsTwo, 1);
+}
+
+function fillTable(json, l, numColRows, columnNumber){
+  var m =0;
+  for (l; l < numColRows; l++)
   {
-    filledEnc = drawLetter(fillSpace('','enc').toUpperCase());
-    filledStat = drawLetter(fillSpace('','stat').toUpperCase());
-    filledElap = drawLetter(fillSpace('','elap').toUpperCase());
-    var row = '<tr id="spaces">'+
-                '<td class="flip-counter enc">'+filledEnc+'</td>'+
-                '<td class="flip-counter stat">'+filledStat+'</td>'+
-                '<td class="flip-counter elap">'+filledElap+'</td>'+
-              '</tr>';
-    tbody.innerHTML += row;
+    if (json[l] != null)
+    {
+      var jsonStat = json[l];
+      var enc = jsonStat.enclosure.name;
+      var row = document.getElementById('col'+columnNumber+'row'+m);
+      row.id += ' '+enc;
+      var stat = jsonStat.status.name;
+      var filledEnc = drawLetter(fillSpace(enc,'enc').toUpperCase());
+      var filledStat = drawLetter(fillSpace(stat,'stat').toUpperCase());
+      var changeDate = new Date(jsonStat.modifiedDate);
+      var filledElap = drawLetter(fillSpace(getElapsed(changeDate),'elap').toUpperCase());
+      var encCell = row.querySelector('.enc');
+      encCell.innerHTML = filledEnc;
+      var statCell = row.querySelector('.stat');
+      statCell.innerHTML = filledStat;
+      statCell.className += colorCode(stat);
+      var elapCell = row.querySelector('.elap');
+      elapCell.innerHTML = filledElap;
+    }
+    m++;
   }
-  table.appendChild(thead);
-  table.appendChild(tbody);
-  $(flaps).append(table);
   return l;
 }
 
@@ -80,7 +78,7 @@ function drawLetter(span){
   var letters = span.split('');
   for (var i = 0; i < letters.length; i++)
   {
-    html += '<li class="digit">'+
+    html += '<li class="digit" id="'+i+'">'+
             '<div class="line"></div>'+
             '<span class="back">'+letters[i]+'</span>'+
             '<div class="hinge">'+
@@ -217,7 +215,7 @@ function getStatus() {
     },
     complete: function(response)
     {
-      parseTable(globalJson);
+      parseStatus(globalJson);
       setTimeout('getStatus()',10000);
     }
   });
