@@ -5,6 +5,7 @@ var totCols = 2; //Set number of columns
 $(document).ready(function(){
   buildTable();
   getStatus();
+  setInterval('getStatus()',10000);
 });
 
 function buildTable(){
@@ -19,9 +20,9 @@ function buildTable(){
     thead.innerHTML += thRow;
     for (var tR = 0; tR < totRows; tR++)
     {
-      var filledEnc = drawLetter(fillSpace('','enc'));
-      var filledStat = drawLetter(fillSpace('','stat'));
-      var filledElap = drawLetter(fillSpace('','elap'));
+      var filledEnc = drawBlanks(fillSpace('','enc'));
+      var filledStat = drawBlanks(fillSpace('','stat'));
+      var filledElap = drawBlanks(fillSpace('','elap'));
       var row = '<tr id="col'+tC+'row'+tR+'">'+
                   '<td class="flip-counter enc">'+filledEnc+'</td>'+
                   '<td class="flip-counter stat">'+filledStat+'</td>'+
@@ -49,40 +50,48 @@ function fillTable(json, l, numColRows, columnNumber){
   var m =0;
   for (l; l < numColRows; l++)
   {
-    if (json[l] != null)
+    var row = document.querySelector('#col'+columnNumber+'row'+m);
+    if (row != null && json[l] != undefined)
     {
       var jsonStat = json[l];
       var enc = jsonStat.enclosure.name;
-      var row = document.getElementById('col'+columnNumber+'row'+m);
-      row.id += ' '+enc;
+      row.setAttribute('name', enc);
       var stat = jsonStat.status.name;
-      var filledEnc = drawLetter(fillSpace(enc,'enc').toUpperCase());
-      var filledStat = drawLetter(fillSpace(stat,'stat').toUpperCase());
-      var changeDate = new Date(jsonStat.modifiedDate);
-      var filledElap = drawLetter(fillSpace(getElapsed(changeDate),'elap').toUpperCase());
       var encCell = row.querySelector('.enc');
-      encCell.innerHTML = filledEnc;
       var statCell = row.querySelector('.stat');
-      statCell.innerHTML = filledStat;
-      statCell.className += colorCode(stat);
       var elapCell = row.querySelector('.elap');
-      elapCell.innerHTML = filledElap;
+      drawLetter(fillSpace(enc,'enc').toUpperCase(), encCell);
+      drawLetter(fillSpace(stat,'stat').toUpperCase(), statCell);
+      var changeDate = new Date(jsonStat.modifiedDate);
+      drawLetter(fillSpace(getElapsed(changeDate),'elap').toUpperCase(), elapCell);
+      statCell.className = 'flip-counter stat '+colorCode(stat);
     }
     m++;
   }
   return l;
 }
 
-function drawLetter(span){
+function drawLetter(span, cell){
+  var letters = span.split('');
+  for (var i = 0; i < letters.length; i++)
+  {
+    var backDigit = cell.querySelector('#digit'+i+' .back');
+    var frontDigit = cell.querySelector('#digit'+i+' .front');
+    backDigit.innerHTML = letters[i];
+    frontDigit.innerHTML = letters[i];
+  }
+}
+
+function drawBlanks(span){
   var html = '';
   var letters = span.split('');
   for (var i = 0; i < letters.length; i++)
   {
-    html += '<li class="digit" id="'+i+'">'+
+    html += '<li class="digit" id="digit'+i+'">'+
             '<div class="line"></div>'+
-            '<span class="back">'+letters[i]+'</span>'+
+            '<span class="back"></span>'+
             '<div class="hinge">'+
-            '<span class="front">'+letters[i]+'</span>'+
+            '<span class="front"></span>'+
             '</div>'+
             '</li>';
   }
@@ -155,7 +164,7 @@ function getElapsed(changeTime){
   }
   else if (elapMS > yearMS)//more than a year
   {
-    elapTime = '>1Y'
+    elapTime = '>1Y';
   }
   else
   {
@@ -216,7 +225,6 @@ function getStatus() {
     complete: function(response)
     {
       parseStatus(globalJson);
-      setTimeout('getStatus()',10000);
     }
   });
 }
