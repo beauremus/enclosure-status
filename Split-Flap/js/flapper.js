@@ -1,6 +1,4 @@
 var globalJson;
-var totRows = 27; //Set number of rows in each column
-var totCols = 2; //Set number of columns
 
 $(document).ready(function(){
   buildTable();
@@ -10,6 +8,8 @@ $(document).ready(function(){
 
 function buildTable(){
   $(flaps).html('');
+  var totRows = 27; //Set number of rows in each column
+  var totCols = 2; //Set number of columns
   for (var tC = 0; tC < totCols; tC++)
   {
     var table = document.createElement('table');
