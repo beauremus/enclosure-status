@@ -203,7 +203,7 @@ function getStatus() {
       }
     },
     dataType: 'json',
-    timeout: 1000,
+    timeout: 3000,
     ifModified: true,
     cache: false,
     success: function(json,status,response)
