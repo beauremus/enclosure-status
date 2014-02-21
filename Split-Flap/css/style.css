@@ -116,10 +116,6 @@ center {
   text-align: center;
   line-height: 0;
   -webkit-text-stroke: 2px;
-  -webkit-perspective: 300px;
-  -moz-perspective: 300px;
-  -ms-perspective: 300px;
-  perspective: 300px;
   -webkit-box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.5);
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.5);
@@ -142,11 +138,6 @@ center {
   font-style: normal;
   text-indent: 0;
   background-color: #000000;
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  -ms-transform: translate3d(0, 0, 0);
-  -o-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
 }
 .flip-counter .digit span.front {
   top: 0;
@@ -170,45 +161,18 @@ center {
   z-index: 5;
   height: 17px;
   width: 24.5px;
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  -ms-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  -webkit-transition: -webkit-transform 0.3s ease-in;
-  -moz-transition: -moz-transform 0.3s ease-in;
-  -o-transition: -o-transform 0.3s ease-in;
-  transition: transform 0.3s ease-in;
-  -webkit-transform-origin: 50% 100%;
-  -moz-transform-origin: 50% 100%;
-  -ms-transform-origin: 50% 100%;
-  -o-transform-origin: 50% 100%;
-  transform-origin: 50% 100%;
 }
 .flip-counter .digit .hinge span {
   height: 0;
   z-index: 5;
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  -ms-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
 .flip-counter .digit .hinge span.front {
   padding-top: 15px;
 }
 .flip-counter .digit .hinge span.back {
   height: 15px;
-  -webkit-transform: rotateX(180deg);
-  -moz-transform: rotateX(180deg);
-  -ms-transform: rotateX(180deg);
-  -o-transform: rotateX(180deg);
-  transform: rotateX(180deg);
 }
 .flip-counter .digit.animate .hinge {
-  -webkit-transform: rotateX(-180deg);
-  -moz-transform: rotateX(-180deg);
-  -ms-transform: rotateX(-180deg);
-  -o-transform: rotateX(-180deg);
-  transform: rotateX(-180deg);
 }
 
 /* FONTS */
