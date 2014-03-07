@@ -1,5 +1,5 @@
 var globalJson;
-var totRows = 27; //Set number of rows in each column
+var totRows = 20; //Set number of rows in each column
 var totCols = 2; //Set number of columns
 
 $(document).ready(function(){
