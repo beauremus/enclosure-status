@@ -4,11 +4,11 @@ $(document).ready(function(){
   var entryJson;
 
   getAllEnclosures();
-  
+
   function getAllEnclosures() {
     $.ajax(
     {
-      url: 'http://www-bd.fnal.gov/EnclosureStatus/getAllEnclosures',
+      url: 'http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries',
       dataType: 'json',
       timeout: 1000,
       ifModified: false,
@@ -32,7 +32,7 @@ $(document).ready(function(){
       }
     });
   }
-    
+
   function getAllStatuses() {
     $.ajax(
     {
@@ -60,7 +60,7 @@ $(document).ready(function(){
       }
     });
   }
-    
+
   function getCurrentEntries() {
     $.ajax(
     {
@@ -87,11 +87,12 @@ $(document).ready(function(){
       }
     });
   }
-    
+
   function buildEnc(json)
   {
-    $.each(json, function(i, enclosure)
+    $.each(json, function(i, entry)
     {
+      var enclosure = entry.enclosure;
       var $machSpan = $(document.createElement('span')).attr('name','enclosureName').attr('id',enclosure.id).append(enclosure.name);
       $('.form').append($machSpan);
       var $hidInput = $(document.createElement('input')).attr('type','hidden').attr('name','enclosureID').attr('value',enclosure.id);
@@ -107,7 +108,7 @@ $(document).ready(function(){
     {
       var $option = $(document.createElement('option')).attr('name','statusID').attr('value',status.id).append(status.name);
       $("select[name='statusID']").append($option);
-    }); 
+    });
     $("select[name='statusID']").change(function() {
       var enclosureID = $(this).attr('id');
       var statusID = $(this).find(':selected').val();
