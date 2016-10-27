@@ -1,68 +1,69 @@
-$(document).ready(function(){
-  var entryJson;
+/**
+ * @fileoverview Display current status of Fermi Enclosures from OAC
+ * @author beau@fnal.gov (Beau Harrison)
+ */
 
-  getCurrentEntries();
-    
-  function getCurrentEntries() {
-    $.ajax(
-    {
-      url: 'http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries',
-      dataType: 'json',
-      timeout: 1000,
-      ifModified: false,
-      cache: false,
-      success: function(json)
-      {
-        entryJson = json;
-      },
-      error: function(xhr,status,error)
-      {
-        console.log('readyState: ' + xhr.readyState);
-        console.log('responseText: '+ xhr.responseText);
-        console.log('status: ' + xhr.status);
-        console.log('text status: ' + status);
-        console.log('error: ' + error);
-      },
-      complete: function()
-      {
-        buildStat(entryJson);
-      }
-    });
-  }
-    
-  function buildStat(json)
-  {
-    var items = [];
-    for(var i = 0; i < json.length/2; i++) {
-    	var halfLength = Math.ceil(json.length/2);
-	var j = i + halfLength; //<div class="encCont" id="row'+i+'">
-	items.push('\
-			<div style="clear:both;" class="enclosureName">'+json[i].enclosure.name+'</div>\
-			<div class="statusName '+colorCode(json[i].status.name)+'">'+json[i].status.name+'</div>\
-			<div class="black"></div>\
-			<div class="enclosureName">'+json[j].enclosure.name+'</div>\
-			<div class="statusName '+colorCode(json[j].status.name)+'">'+json[j].status.name+'</div>\
-		');
-    }
-    
-    $('<div>', {
-    		id: "new",
-		html: items.join('')
-	}).appendTo("#container");
-  }
+// Self executing function as initializer
+(function(){
+    getEnclosureStatus();
+})();
 
-  function colorCode(statName) {
-    switch (statName) {
-      case 'Undefined':
-        return 'undef';
-      case 'Controlled':
-        return 'cntrl';
-      case 'Supervised':
-        return 'super';
-      case 'Open':
-        return 'open';
-      case 'No Access':
-        return 'noacs';
+/**
+ * [getEnclosureStatus description]
+ * @return {[type]} [description]
+ */
+function getEnclosureStatus() {
+    // Check browser for fetch capability
+    if (!self.fetch) {
+        alert('This browser does not support fetch.');
+        return;
     }
-  }
-});
+
+// http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(function(response){
+          response.json()
+            .then(function(json){
+                // Call json parser
+                console.log(splitArray(json, 4));
+            })
+      });
+}
+
+// Consider making this method an extension of the Array.prototype
+function splitArray(inputArray, bins) {
+    if (!Array.isArray(inputArray) || !Number.isInteger(bins) || !(bins > 0)) {
+        return null;
+    }
+
+    let totalLength = inputArray.length,
+        countInBins = totalLength / bins,
+        outputArray = [];
+
+    if (Number.isInteger(countInBins)) {
+        for (let i = 0; i < bins; i++) {
+            outputArray.push([]);
+            for (let j = 0; j < countInBins; j++) {
+                outputArray[i].push(inputArray[i+j]);
+            }
+        }
+    } else {
+        let overflow = totalLength % bins;
+
+        for (let i = 0; i < bins; i++) {
+            outputArray.push([]);
+
+            if (i < overflow) {
+                for (let j = 0; j < countInBins + 1; j++) {
+                    outputArray[i].push(inputArray[i+j]);
+                }
+            } else {
+                for (let j = 0; j < countInBins; j++) {
+                    outputArray[i].push(inputArray[i+j]);
+                }
+            }
+        }
+    }
+
+    return outputArray;
+}
