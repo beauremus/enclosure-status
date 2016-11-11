@@ -1,0 +1,69 @@
+@font-face { font-family: Roboto; src: url('../fonts/Roboto-Regular.ttf'); }
+
+/* Variables */
+:root {
+  --bg-color: rgb(0,0,0);
+    --odd-row: rgb(61,61,61);
+  --even-row: rgb(82,82,82);
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  background-color: var(--bg-color);
+  color: white;
+}
+
+.flex {
+  display: flex;
+  font-size: 2vw;
+}
+
+.column {
+  flex: 1;
+  justify-content: center;
+}
+
+.row:nth-child(odd) {
+  background-color: var(--odd-row);
+}
+
+.row:nth-child(even) {
+  background-color: var(--even-row);
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+.enclosure, .status {
+  padding: .4vh 1.62vw;
+  flex-basis: 0;
+}
+
+.enclosure {
+  text-align: right;
+  flex-grow: 1;
+}
+
+.status {
+  flex-grow: 0.5;
+}
+
+/* Status Colors */
+.undef {
+  color: rgb(255,255,255);
+}
+.noacs {
+  color: rgb(237,29,4);
+}
+.open {
+  color: rgb(0,255,255);
+}
+.super {
+  color: rgb(0,255,0);
+}
+.cntrl {
+  color: rgb(255,255,0);
+}
