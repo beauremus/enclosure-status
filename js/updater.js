@@ -8,6 +8,7 @@ $(document).ready(function(){
   function getAllEnclosures() {
     $.ajax(
     {
+      // http://www-bd.fnal.gov/EnclosureStatus/getAllEnclosures
       url: 'http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries',
       dataType: 'json',
       timeout: 1000,
