@@ -1,10 +1,32 @@
 (function(){
+    console.log('this: ',this);
+    console.log('window: ',window);
+
+    window.sort = true;
+
+    init();
+
+    document.querySelector('#updateHeader').addEventListener('click', toggleSort, false);
+})();
+
+function init() {
+    document.querySelector('#updaterContainer').innerHTML = '';
+
     let url = 'http://www-bd.fnal.gov/EnclosureStatus/';
 
     fetch(url + 'getAllEnclosures')
         .then(function(response) {
             response.json().then(function(allEnclosures) {
-                buildEnclosures(sortObjectArray(allEnclosures));
+                console.log('window.sort: ',window.sort);
+                console.log('allEnclosures: ',allEnclosures);
+
+                if (window.sort) {
+                    allEnclosures = sortObjectArray(allEnclosures);
+                }
+
+                console.log('allEnclosures: ',allEnclosures);
+
+                buildEnclosures(allEnclosures);
             });
             fetch(url + 'getAllStatuses')
                 .then(function(response) {
@@ -19,7 +41,12 @@
                         });
                 });
         });
-})();
+}
+
+function toggleSort() {
+    window.sort = !window.sort;
+    init();
+}
 
 function sortObjectArray(array) {
     if (array === undefined) {
