@@ -1,22 +1,30 @@
 @font-face { font-family: Roboto; src: url('../fonts/Roboto-Regular.ttf'); }
+@font-face { font-family: Vegur; src: url('../fonts/Vegur-Regular.otf'); }
 
 /* Variables */
 :root {
   --bg-color: rgb(0,0,0);
-    --odd-row: rgb(61,61,61);
-  --even-row: rgb(82,82,82);
+    --odd-row: rgb(18,18,18);
+  --even-row: rgb(26,26,26);
 }
 
 body {
-  font-family: Roboto, sans-serif;
+  /*font-family: Roboto, sans-serif;*/
+  font-family: Vegur, arial, sans-serif;
   font-weight: 400;
   background-color: var(--bg-color);
   color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+center {
+  display: none;
 }
 
 .flex {
   display: flex;
-  font-size: 2vw;
+  font-size: 5.4vh;
 }
 
 .column {
@@ -35,20 +43,24 @@ body {
 .row {
   display: flex;
   justify-content: center;
+  padding-right: .75vw;
 }
 
 .enclosure, .status {
-  padding: .4vh 1.62vw;
+  padding-top: .4vh;
+  padding-bottom: .4vh;
   flex-basis: 0;
 }
 
 .enclosure {
+  padding-right: 1.162vw;
   text-align: right;
   flex-grow: 1;
 }
 
 .status {
-  flex-grow: 0.5;
+  padding-left: 1.162vw;
+  flex-grow: 0.75;
 }
 
 /* Status Colors */
@@ -66,4 +78,24 @@ body {
 }
 .cntrl {
   color: rgb(255,255,0);
+}
+
+/* Updater */
+h2 {
+  text-align: center;
+}
+#updaterContainer {
+  width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+#updaterContainer > span {
+  width: 47%;
+  margin: .5% 1.5%;
+  color: white;
+  display: inline-block;
+}
+#updaterContainer > select {
+  width: 47%;
+  margin: .5% 1.5%;
 }

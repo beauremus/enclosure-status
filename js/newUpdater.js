@@ -1,4 +1,7 @@
 (function(){
+    console.log('this: ',this);
+    console.log('window: ',window);
+
     window.sort = true;
 
     init();
@@ -14,9 +17,14 @@ function init() {
     fetch(url + 'getAllEnclosures')
         .then(function(response) {
             response.json().then(function(allEnclosures) {
+                console.log('window.sort: ',window.sort);
+                console.log('allEnclosures: ',allEnclosures);
+
                 if (window.sort) {
                     allEnclosures = sortObjectArray(allEnclosures);
                 }
+
+                console.log('allEnclosures: ',allEnclosures);
 
                 buildEnclosures(allEnclosures);
             });
