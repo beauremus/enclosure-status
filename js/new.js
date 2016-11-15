@@ -3,12 +3,12 @@
  * @author beau@fnal.gov (Beau Harrison)
  */
 
-const TOTAL_COLUMNS = 2;
+const TOTAL_COLUMNS = 3;
 
 // Self executing function as initializer
 (function(){
     getEnclosureStatus();
-    setInterval('getEnclosureStatus()',60000);
+    setInterval('getEnclosureStatus()',10000);
 })();
 
 /**
@@ -33,7 +33,7 @@ function getEnclosureStatus() {
           }
           response.json()
             .then(function(json){
-                document.getElementById('container').innerHTML = '';
+                document.getElementById('mainContainer').innerHTML = '';
                 console.log(splitArray(json, TOTAL_COLUMNS));
                 buildColumns(splitArray(json, TOTAL_COLUMNS));
                 document.body.style.background = 'black';
@@ -68,7 +68,6 @@ function splitArray(inputArray, bins) {
         for (let i = 0; i < bins; i++) {
             outputArray.push([]);
 
-// TODO: figure out why there are extra empty arrays
             if (i < overflow) {
                 for (let j = 0; j < countInBins; j++) {
                     outputArray[i].push(inputArray[index++]);
@@ -86,7 +85,7 @@ function splitArray(inputArray, bins) {
 
 function buildColumns(inputArray) {
     let columnCount = inputArray.length,
-        container = document.getElementById('container');
+        container = document.getElementById('mainContainer');
 
     for (let i = 0; i < columnCount; i++) {
         let column = document.createElement('div');
@@ -105,7 +104,7 @@ function buildColumns(inputArray) {
             status.className = 'status';
             status.className += ' ' + colorCode(object.status.name);
 
-            enclosure.textContent = object.enclosure.name;
+            enclosure.textContent = nameFilter(object.enclosure.name);
             status.textContent = object.status.name;
 
             row.appendChild(enclosure);
@@ -130,4 +129,17 @@ function colorCode(statName) {
     case 'No Access':
       return 'noacs';
   }
+}
+
+function nameFilter(name) {
+    const REPLACEMENTS = ['MINOS Alc','MINOS Abs','Xport US/DS','Xport Mid'];
+    const TO_REPLACE = ['MINOS Alcoves','MINOS Absorber','Transport US/DS','Transport Mid'];
+
+    let index = TO_REPLACE.indexOf(name);
+
+    if (index > -1) {
+        name = REPLACEMENTS[index];
+    }
+
+    return name;
 }
