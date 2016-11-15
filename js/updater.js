@@ -1,147 +1,107 @@
-$(document).ready(function(){
-  var encJson;
-  var statJson;
-  var entryJson;
+(function(){
+    window.sort = true;
 
-  getAllEnclosures();
+    init();
 
-  function getAllEnclosures() {
-    $.ajax(
-    {
-      // http://www-bd.fnal.gov/EnclosureStatus/getAllEnclosures
-      url: 'http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries',
-      dataType: 'json',
-      timeout: 1000,
-      ifModified: false,
-      cache: false,
-      success: function(json)
-      {
-        encJson = json;
-      },
-      error: function(xhr,status,error)
-      {
-        console.log('readyState: ' + xhr.readyState);
-        console.log('responseText: '+ xhr.responseText);
-        console.log('status: ' + xhr.status);
-        console.log('text status: ' + status);
-        console.log('error: ' + error);
-      },
-      complete: function()
-      {
-        buildEnc(encJson);
-        getAllStatuses();
-      }
+    document.querySelector('#updateHeader').addEventListener('click', toggleSort, false);
+})();
+
+function init() {
+    document.querySelector('#updaterContainer').innerHTML = '';
+
+    let url = 'http://www-bd.fnal.gov/EnclosureStatus/';
+
+    fetch(url + 'getAllEnclosures')
+        .then(function(response) {
+            response.json().then(function(allEnclosures) {
+                if (window.sort) {
+                    allEnclosures = sortObjectArray(allEnclosures);
+                }
+
+                buildEnclosures(allEnclosures);
+            });
+            fetch(url + 'getAllStatuses')
+                .then(function(response) {
+                    response.json().then(function(allStatuses) {
+                        buildStatuses(allStatuses);
+                    });
+                    fetch(url + 'getCurrentEntries')
+                        .then(function(response) {
+                            response.json().then(function(currentEntries) {
+                                setSelected(currentEntries);
+                            });
+                        });
+                });
+        });
+}
+
+function toggleSort() {
+    window.sort = !window.sort;
+    init();
+}
+
+function sortObjectArray(array) {
+    if (array === undefined) {
+        array = [];
+    }
+
+    array.sort(function(a, b) {
+        return parseFloat(a.id) - parseFloat(b.id);
     });
-  }
 
-  function getAllStatuses() {
-    $.ajax(
-    {
-      url: 'http://www-bd.fnal.gov/EnclosureStatus/getAllStatuses',
-      dataType: 'json',
-      timeout: 1000,
-      ifModified: false,
-      cache: false,
-      success: function(json)
-      {
-        statJson = json;
-      },
-      error: function(xhr,status,error)
-      {
-        console.log('readyState: ' + xhr.readyState);
-        console.log('responseText: '+ xhr.responseText);
-        console.log('status: ' + xhr.status);
-        console.log('text status: ' + status);
-        console.log('error: ' + error);
-      },
-      complete: function()
-      {
-        buildStat(statJson);
-        getCurrentEntries();
-      }
-    });
-  }
+    return array;
+}
 
-  function getCurrentEntries() {
-    $.ajax(
-    {
-      url: 'http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries',
-      dataType: 'json',
-      timeout: 1000,
-      ifModified: false,
-      cache: false,
-      success: function(json)
-      {
-        entryJson = json;
-      },
-      error: function(xhr,status,error)
-      {
-        console.log('readyState: ' + xhr.readyState);
-        console.log('responseText: '+ xhr.responseText);
-        console.log('status: ' + xhr.status);
-        console.log('text status: ' + status);
-        console.log('error: ' + error);
-      },
-      complete: function()
-      {
-        setSelected(entryJson);
-      }
-    });
-  }
+function buildEnclosures(json) {
+    for (enclosure of json) {
+        let encSpan = document.createElement('span'),
+            statSelect = document.createElement('select');
 
-  function buildEnc(json)
-  {
-    $.each(json, function(i, entry)
-    {
-      var enclosure = entry.enclosure;
-      var $machSpan = $(document.createElement('span')).attr('name','enclosureName').attr('id',enclosure.id).append(enclosure.name);
-      $('.form').append($machSpan);
-      var $hidInput = $(document.createElement('input')).attr('type','hidden').attr('name','enclosureID').attr('value',enclosure.id);
-      $('.form').append($hidInput);
-      var $statSelect = $(document.createElement('select')).attr('name','statusID').attr('id',enclosure.id);
-      $('.form').append($statSelect);
-    });
-  }
+        encSpan.setAttribute('name','enclosureName');
+        encSpan.id = enclosure.id;
+        encSpan.textContent = enclosure.name;
 
-  function buildStat(json)
-  {
-    $.each(json, function(i, status)
-    {
-      var $option = $(document.createElement('option')).attr('name','statusID').attr('value',status.id).append(status.name);
-      $("select[name='statusID']").append($option);
-    });
-    $("select[name='statusID']").change(function() {
-      var enclosureID = $(this).attr('id');
-      var statusID = $(this).find(':selected').val();
-      console.log('enclosureID='+enclosureID+'&statusID='+statusID);
-      $.ajax(
-      {
-        type: 'POST',
-        url: 'http://www-bd.fnal.gov/EnclosureStatus/addEntry',
-        async: true,
-        dataType: 'text',
-        data: 'enclosureID='+enclosureID+'&statusID='+statusID,
-        success: function(text)
-        {
-          alert(text);
-        },
-        error: function(response)
-        {
-          alert(response.responseText);
+        statSelect.setAttribute('name','statusID');
+        statSelect.id = enclosure.id;
+
+        document.querySelector('#updaterContainer').appendChild(encSpan);
+        document.querySelector('#updaterContainer').appendChild(statSelect);
+    }
+}
+
+function buildStatuses(json) {
+    let selects = document.querySelectorAll('select[name="statusID"]');
+
+    for (select of selects) {
+        for (stat of json) {
+            let option = document.createElement('option');
+
+            option.setAttribute('name','statusID');
+            option.value = stat.id;
+            option.textContent = stat.name;
+
+            select.appendChild(option);
         }
-      });
-    });
-  }
 
-  function setSelected(json)
-  {
-    $.each(json, function(i, entry)
-    {
-      var $option = $('select[id='+entry.enclosure.id+'] option[value='+entry.status.id+']');
-      if (entry.status.id == $option.val())
-      {
-        $($option).attr('selected','selected');
-      }
-    });
-  }
-});
+        select.addEventListener('change', updateStatus, false);
+    }
+}
+
+function setSelected(json) {
+    for (entry of json) {
+        document.querySelector(`select[id="${entry.enclosure.id}"] option[value="${entry.status.id}"]`).setAttribute('selected','selected');
+    }
+}
+
+function updateStatus(response) {
+    let enclosureID = response.target.id,
+        statusID = response.target.selectedOptions[0].value,
+        enclosureName = response.target.previousSibling.textContent,
+        statusName = response.target.selectedOptions[0].textContent;
+
+    let url = `http://www-bd.fnal.gov/EnclosureStatus/addEntry?enclosureID=${enclosureID}&statusID=${statusID}`;
+
+    fetch(url,{method: 'POST'})
+        .then((value) => {console.log(value);alert(`Successfully changed ${enclosureName} to ${statusName}`);})
+        .catch((err) => {console.log(err);alert("ERROR");});
+}

@@ -34,8 +34,9 @@ function getEnclosureStatus() {
           response.json()
             .then(function(json){
                 document.getElementById('mainContainer').innerHTML = '';
-                console.log(splitArray(json, TOTAL_COLUMNS));
+
                 buildColumns(splitArray(json, TOTAL_COLUMNS));
+
                 document.body.style.background = 'black';
             })
       });
@@ -58,7 +59,6 @@ function splitArray(inputArray, bins) {
             outputArray.push([]);
             for (let j = 0; j < countInBins; j++) {
                 outputArray[i].push(inputArray[index++]);
-                console.log('inputArray[index]: ',inputArray[index]);
             }
         }
     } else {
@@ -91,8 +91,6 @@ function buildColumns(inputArray) {
         let column = document.createElement('div');
 
         column.className = 'column';
-
-        console.log('inputArray: ',inputArray);
 
         for (let object of inputArray[i]) {
             let row = document.createElement('div'),
