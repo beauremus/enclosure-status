@@ -24,7 +24,7 @@ function getEnclosureStatus() {
 
 // https://jsonplaceholder.typicode.com/users
 // http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries
-    fetch('http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries')
+    fetch('http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries',{cache:'no-cache'})
       .then(function(response){
           if (!response.ok) {
               document.body.style.background = 'red';
