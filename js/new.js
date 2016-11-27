@@ -28,6 +28,8 @@ function getEnclosureStatus() {
       .then(function(response){
           if (!response.ok) {
               document.body.style.background = 'red';
+              document.querySelector('#appStatus').className = 'noacs';
+              document.querySelector('#appStatus').textContent = 'No response';
               console.log('ERROR: Response not OK');
               return;
           }
@@ -38,6 +40,8 @@ function getEnclosureStatus() {
                 buildColumns(splitArray(json, TOTAL_COLUMNS));
 
                 document.body.style.background = 'black';
+                document.querySelector('#appStatus').className = 'super';
+                document.querySelector('#appStatus').textContent = 'Working';
             })
       });
 }
@@ -76,6 +80,17 @@ function splitArray(inputArray, bins) {
                 for (let j = 0; j < countInBins - 1; j++) {
                     outputArray[i].push(inputArray[index++]);
                 }
+
+                outputArray[i].push(
+                    {
+                        "status": {
+                            "name":"Working"
+                        },
+                        "enclosure": {
+                            "name":"App Status:"
+                        },
+                    }
+                );
             }
         }
     }
@@ -104,6 +119,11 @@ function buildColumns(inputArray) {
 
             enclosure.textContent = nameFilter(object.enclosure.name);
             status.textContent = object.status.name;
+
+            if (object.enclosure.name === 'App Status:') {
+                enclosure.id = 'appStatusLabel';
+                status.id = 'appStatus';
+            }
 
             row.appendChild(enclosure);
             row.appendChild(status);
