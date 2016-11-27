@@ -27,10 +27,7 @@ function getEnclosureStatus() {
     fetch('http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries',{cache:'no-cache'})
       .then(function(response){
           if (!response.ok) {
-              document.body.style.background = 'red';
-              document.querySelector('#appStatus').className = 'noacs';
-              document.querySelector('#appStatus').textContent = 'No response';
-              console.log('ERROR: Response not OK');
+              errorState("Response not OK");
               return;
           }
           response.json()
@@ -39,10 +36,11 @@ function getEnclosureStatus() {
 
                 buildColumns(splitArray(json, TOTAL_COLUMNS));
 
-                document.body.style.background = 'black';
-                document.querySelector('#appStatus').className = 'super';
-                document.querySelector('#appStatus').textContent = 'Working';
+                successState();
             })
+      })
+      .catch(function(error) {
+        errorState(error);
       });
 }
 
@@ -160,4 +158,17 @@ function nameFilter(name) {
     }
 
     return name;
+}
+
+function errorState(error) {
+    document.body.style.background = 'red';
+    document.querySelector('#appStatus').className = 'noacs';
+    document.querySelector('#appStatus').textContent = 'No response';
+    console.log(`ERROR: ${error}`);
+}
+
+function successState() {
+    document.body.style.background = 'black';
+    document.querySelector('#appStatus').className = 'super';
+    document.querySelector('#appStatus').textContent = 'Working';
 }
