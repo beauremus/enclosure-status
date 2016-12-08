@@ -24,19 +24,20 @@ function getEnclosureStatus() {
 
 // https://jsonplaceholder.typicode.com/users
 // http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries
-    fetch('http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries',{cache:'no-cache'})
+    fetch(`http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries?${new Date().getTime()}`) // Date argument for cache busting
       .then(function(response){
           if (!response.ok) {
               errorState("Response not OK");
               return;
           }
+          let lastDate = getTimeFromDate(response.headers.get('date'));
           response.json()
             .then(function(json){
                 document.getElementById('mainContainer').innerHTML = '';
 
-                buildColumns(splitArray(json, TOTAL_COLUMNS));
+                buildColumns(appendAppStatus(splitArray(json, TOTAL_COLUMNS),lastDate));
 
-                successState();
+                successState(lastDate);
             })
       })
       .catch(function(error) {
@@ -78,17 +79,6 @@ function splitArray(inputArray, bins) {
                 for (let j = 0; j < countInBins - 1; j++) {
                     outputArray[i].push(inputArray[index++]);
                 }
-
-                outputArray[i].push(
-                    {
-                        "status": {
-                            "name":"Working"
-                        },
-                        "enclosure": {
-                            "name":"App Status:"
-                        },
-                    }
-                );
             }
         }
     }
@@ -132,6 +122,20 @@ function buildColumns(inputArray) {
     }
 }
 
+function appendAppStatus(statusArray,time) {
+    statusArray[statusArray.length - 1].push(
+        {
+            "status": {
+                "name":time
+            },
+            "enclosure": {
+                "name":"App Status:"
+            },
+        }
+    );
+    return statusArray;
+}
+
 function colorCode(statName) {
   switch (statName) {
     case 'Undefined':
@@ -167,8 +171,20 @@ function errorState(error) {
     console.log(`ERROR: ${error}`);
 }
 
-function successState() {
+function successState(time) {
     document.body.style.background = 'black';
     document.querySelector('#appStatus').className = 'super';
-    document.querySelector('#appStatus').textContent = 'Working';
+    document.querySelector('#appStatus').textContent = time;
+}
+
+function getTimeFromDate(dateString) {
+    let d = new Date(dateString);
+
+    let utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+
+    let localDate = new Date(utc + (3600000*-6));
+
+    let localDateString = localDate.toString();
+
+    return localDateString.split(' ')[4];
 }
