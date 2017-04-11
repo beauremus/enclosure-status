@@ -180,11 +180,12 @@ function successState(time) {
 function getTimeFromDate(dateString) {
     let d = new Date(dateString);
 
-    let utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+    //let utc = d.getTime() + (d.getTimezoneOffset() * 60000);
 
-    let localDate = new Date(utc + (3600000*-6));
+    //let localDate = new Date(utc + (3600000*-6));
 
-    let localDateString = localDate.toString();
+    //let localDateString = localDate.toString();
+    let localDateString = d.toString();
 
     return localDateString.split(' ')[4];
 }
