@@ -88,6 +88,7 @@ function splitArray(inputArray, bins) {
 
 function buildColumns(inputArray) {
     let columnCount = inputArray.length,
+        prevColumnHeight = 0,
         container = document.getElementById('mainContainer');
 
     for (let i = 0; i < columnCount; i++) {
@@ -117,6 +118,14 @@ function buildColumns(inputArray) {
             row.appendChild(status);
             column.appendChild(row);
         }
+
+        if (column.childElementCount < prevColumnHeight) {
+            let row = document.createElement('div');
+            row.classList.add('row', 'empty');
+            column.appendChild(row);
+        }
+
+        prevColumnHeight = column.childElementCount;
 
         container.appendChild(column);
     }
