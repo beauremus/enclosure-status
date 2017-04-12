@@ -121,13 +121,17 @@ function buildColumns(inputArray) {
 
         if (column.childElementCount < prevColumnHeight) {
             let row = document.createElement('div');
-            row.classList.add('row', 'empty');
+            row.className = 'row';
             column.appendChild(row);
+            container.appendChild(column);
+            let rowHeight = column.querySelector('.row').clientHeight;
+            row.style.height = rowHeight;
+            row.setAttribute('style',`height:${rowHeight}px`)
+        } else {
+            container.appendChild(column);
         }
 
         prevColumnHeight = column.childElementCount;
-
-        container.appendChild(column);
     }
 
     updateRowHeight(container.querySelector(`div.column:nth-child(${TOTAL_COLUMNS})`).childElementCount);

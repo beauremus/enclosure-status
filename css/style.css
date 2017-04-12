@@ -47,10 +47,6 @@ center {
   padding-right: .75vw;
 }
 
-.empty {
-  height: calc(71.4vh / var(--row-count));
-}
-
 .enclosure, .status {
   padding-top: .4vh;
   padding-bottom: .4vh;
