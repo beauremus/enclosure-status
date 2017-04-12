@@ -120,6 +120,8 @@ function buildColumns(inputArray) {
 
         container.appendChild(column);
     }
+
+    updateRowHeight(container.querySelector(`div.column:nth-child(${TOTAL_COLUMNS})`).childElementCount);
 }
 
 function appendAppStatus(statusArray,time) {
@@ -152,8 +154,8 @@ function colorCode(statName) {
 }
 
 function nameFilter(name) {
-    const REPLACEMENTS = ['MINOS Alc','MINOS Abs','Xport US/DS','Xport Mid'];
-    const TO_REPLACE = ['MINOS Alcoves','MINOS Absorber','Transport US/DS','Transport Mid'];
+    const REPLACEMENTS = ['MINOS Alc','MINOS Abs','Xport US/DS','Xport Mid','Muon Ext'];
+    const TO_REPLACE = ['MINOS Alcoves','MINOS Absorber','Transport US/DS','Transport Mid','Muon Extraction'];
 
     let index = TO_REPLACE.indexOf(name);
 
@@ -188,4 +190,8 @@ function getTimeFromDate(dateString) {
     let localDateString = d.toString();
 
     return localDateString.split(' ')[4];
+}
+
+function updateRowHeight(rowCount) {
+    document.querySelector(':root').style.setProperty('--row-count', rowCount)
 }

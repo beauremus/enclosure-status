@@ -4,8 +4,9 @@
 /* Variables */
 :root {
   --bg-color: rgb(0,0,0);
-    --odd-row: rgb(18,18,18);
+  --odd-row: rgb(18,18,18);
   --even-row: rgb(26,26,26);
+  --row-count: 14;
 }
 
 body {
@@ -24,7 +25,7 @@ center {
 
 .flex {
   display: flex;
-  font-size: 5.4vh;
+  font-size: calc(71.4vh / var(--row-count));
 }
 
 .column {
