@@ -1,4 +1,51 @@
-$(document).ready(function(){
+/**
+ * @fileoverview Display current status of Fermi Enclosures from OAC
+ * @author beau@fnal.gov (Beau Harrison)
+ */
+
+function build(json) {
+  $.each(json, function (i, entry) {
+    var $machSpan = $(document.createElement('span')).attr('name', 'enclosureName').append(entry.enclosure.name);
+    $('.simple').append($machSpan);
+    var $statSpan = $(document.createElement('span')).attr('name', 'statusName').attr('class', colorCode(entry.status.name)).append(entry.status.name);
+    $('.simple').append($statSpan);
+  });
+}
+
+function errorState(error) {
+  document.body.style.background = 'red'
+  document.querySelector('#appStatus').className = 'noacs'
+  document.querySelector('#appStatus').textContent = 'No response'
+  console.error(`ERROR: ${error}`)
+}
+
+function getCurrentEntries() {
+  if (!self.fetch) {
+    alert('This browser does not support fetch.')
+    return
+  }
+
+  const uri = 'http://localhost:3000/getCurrentEntries'
+  // const uri = 'http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries'
+  fetch(`${uri}?${new Date().getTime()}`) // Date argument for cache busting
+    .then((response) => {
+      if (!response.ok) {
+        errorState('Response not OK')
+        return
+      } else {
+        response.json().then(build(response))
+      }
+    })
+    .catch((error) => errorState(error))
+}
+
+// Self executing function as initializer
+(function () {
+  getCurrentEntries()
+  setInterval('getCurrentEntries()', 10000)
+})()
+
+/* $(document).ready(function(){
   var entryJson;
 
   getCurrentEntries();
@@ -56,4 +103,4 @@ $(document).ready(function(){
         return 'noacs';
     }
   }
-});
+}); */

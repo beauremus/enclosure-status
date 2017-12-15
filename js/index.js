@@ -67,8 +67,8 @@ function display(inputArray) {
 
   for (let object of inputArray) {
     const row = document.createElement('div')
-    const enclosure = document.createElement('div')
-    const status = document.createElement('div')
+    const enclosure = document.createElement('span')
+    const status = document.createElement('span')
 
     row.className = 'row'
     enclosure.className = 'enclosure'
@@ -118,8 +118,8 @@ function getEnclosureStatus() {
     return
   }
 
-  const uri = 'http://localhost:3000/getCurrentEntries'
-  // const uri = 'http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries'
+  // const uri = 'http://localhost:3000/getCurrentEntries'
+  const uri = 'http://www-bd.fnal.gov/EnclosureStatus/getCurrentEntries'
   fetch(`${uri}?${new Date().getTime()}`) // Date argument for cache busting
     .then((response) => {
       if (!response.ok) {
