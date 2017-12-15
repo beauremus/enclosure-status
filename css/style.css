@@ -53,10 +53,13 @@ center {
   background-color: var(--even-row);
 }
 
+#appStatus {
+  background-color: var(--bg-color);
+}
+
 .enclosure {
   text-align: right;
 }
-
 
 /* Status Colors */
 
