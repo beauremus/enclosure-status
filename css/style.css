@@ -37,6 +37,7 @@ center {
 
 #statusContainer {
   grid-row: -1;
+  background-color: var(--bg-color);
 }
 
 .row {
@@ -51,10 +52,6 @@ center {
 
 .row:nth-child(even) {
   background-color: var(--even-row);
-}
-
-#appStatus {
-  background-color: var(--bg-color);
 }
 
 .enclosure {
