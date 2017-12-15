@@ -1,107 +1,109 @@
-(function(){
-    window.sort = true;
-
-    init();
-
-    document.querySelector('#updateHeader').addEventListener('click', toggleSort, false);
-})();
-
-function init() {
-    document.querySelector('#updaterContainer').innerHTML = '';
-
-    let url = 'http://www-bd.fnal.gov/EnclosureStatus/';
-
-    fetch(url + 'getAllEnclosures')
-        .then(function(response) {
-            response.json().then(function(allEnclosures) {
-                if (window.sort) {
-                    allEnclosures = sortObjectArray(allEnclosures);
-                }
-
-                buildEnclosures(allEnclosures);
-            });
-            fetch(url + 'getAllStatuses')
-                .then(function(response) {
-                    response.json().then(function(allStatuses) {
-                        buildStatuses(allStatuses);
-                    });
-                    fetch(url + 'getCurrentEntries')
-                        .then(function(response) {
-                            response.json().then(function(currentEntries) {
-                                setSelected(currentEntries);
-                            });
-                        });
-                });
-        });
-}
-
-function toggleSort() {
-    window.sort = !window.sort;
-    init();
-}
+/**
+ * @fileoverview Display current status of Fermi Enclosures from OAC and allow updates
+ * @author beau@fnal.gov (Beau Harrison)
+ */
 
 function sortObjectArray(array) {
-    if (array === undefined) {
-        array = [];
-    }
-
-    array.sort(function(a, b) {
-        return parseFloat(a.id) - parseFloat(b.id);
-    });
-
-    return array;
+  const newArray = array || []
+  return newArray.sort((a, b) => parseFloat(a.id) - parseFloat(b.id))
 }
 
 function buildEnclosures(json) {
-    for (enclosure of json) {
-        let encSpan = document.createElement('span'),
-            statSelect = document.createElement('select');
+  const main = document.querySelector('main')
 
-        encSpan.setAttribute('name','enclosureName');
-        encSpan.id = enclosure.id;
-        encSpan.textContent = enclosure.name;
+  if (window.sort) json = sortObjectArray(json)
 
-        statSelect.setAttribute('name','statusID');
-        statSelect.id = enclosure.id;
+  for (let enclosure of json) {
+    const row = document.createElement('div')
+    const encSpan = document.createElement('span')
+    const statSelect = document.createElement('select')
 
-        document.querySelector('#updaterContainer').appendChild(encSpan);
-        document.querySelector('#updaterContainer').appendChild(statSelect);
-    }
-}
+    row.className = 'row'
 
-function buildStatuses(json) {
-    let selects = document.querySelectorAll('select[name="statusID"]');
+    encSpan.className = 'enclosure'
+    encSpan.setAttribute('name', 'enclosureName')
+    encSpan.id = enclosure.id
+    encSpan.textContent = enclosure.name
 
-    for (select of selects) {
-        for (stat of json) {
-            let option = document.createElement('option');
+    statSelect.className = 'status'
+    statSelect.setAttribute('name', 'statusID')
+    statSelect.id = enclosure.id
 
-            option.setAttribute('name','statusID');
-            option.value = stat.id;
-            option.textContent = stat.name;
-
-            select.appendChild(option);
-        }
-
-        select.addEventListener('change', updateStatus, false);
-    }
-}
-
-function setSelected(json) {
-    for (entry of json) {
-        document.querySelector(`select[id="${entry.enclosure.id}"] option[value="${entry.status.id}"]`).setAttribute('selected','selected');
-    }
+    row.appendChild(encSpan)
+    row.appendChild(statSelect)
+    main.appendChild(row)
+  }
 }
 
 function updateStatus(response) {
-    let enclosureID = response.target.id,
-        statusID = response.target.selectedOptions[0].value,
-        enclosureName = response.target.previousSibling.textContent,
-        statusName = response.target.selectedOptions[0].textContent;
+  const enclosureID = response.target.id
+  const statusID = response.target.selectedOptions[0].value
+  const enclosureName = response.target.previousSibling.textContent
+  const statusName = response.target.selectedOptions[0].textContent
+  const url = 'http://www-bd.fnal.gov/EnclosureStatus/addEntry'
+  const request = `?enclosureID=${enclosureID}&statusID=${statusID}`
 
-    let url = `http://www-bd.fnal.gov/EnclosureStatus/addEntry?enclosureID=${enclosureID}&statusID=${statusID}`;
-
-    fetch(url,{method: 'POST'})
-        .then((value) => {console.log(value);alert(`Successfully changed ${enclosureName} to ${statusName}`);})
-        .catch((err) => {console.log(err);alert("ERROR");});
+  fetch(url + request, { method: 'POST' })
+    .then(() => {
+      alert(`Successfully changed ${enclosureName} to ${statusName}`)
+    })
+    .catch((err) => alert('ERROR: ', err))
 }
+
+function buildStatuses(json) {
+  const selects = document.querySelectorAll('select[name="statusID"]')
+
+  for (let select of selects) {
+    for (let stat of json) {
+      const option = document.createElement('option')
+
+      option.setAttribute('name', 'statusID')
+      option.value = stat.id
+      option.textContent = stat.name
+
+      select.appendChild(option)
+    }
+
+    select.addEventListener('change', updateStatus, false)
+  }
+}
+
+function setSelected(json) {
+  for (let entry of json) {
+    const selector = `select[id="${entry.enclosure.id}"] option[value="${entry.status.id}"]`
+    document.querySelector(selector).setAttribute('selected', 'selected')
+  }
+}
+
+function init() {
+  document.querySelector('main').innerHTML = ''
+
+  const url = 'http://www-bd.fnal.gov/EnclosureStatus/'
+  // const url = 'http://localhost:3000/'
+
+  fetch(url + 'getAllEnclosures')
+    .then((response) => {
+      response.json().then(buildEnclosures)
+
+      fetch(url + 'getAllStatuses')
+        .then((response) => {
+          response.json().then(buildStatuses)
+
+          fetch(url + 'getCurrentEntries')
+            .then((response) => response.json().then(setSelected))
+        })
+    })
+}
+
+function toggleSort() {
+  window.sort = !window.sort
+  init()
+}
+
+// Self executing function as initializer
+(function(){
+  window.sort = true
+  init()
+  document.querySelector('header')
+    .addEventListener('click', toggleSort, false)
+})()

@@ -559,5 +559,291 @@
       },
       "modifiedDate": "Nov 19, 2017 5:20:35 PM"
     }
+  ],
+  "getAllEnclosures": [
+    {
+      "id": 3,
+      "name": "Booster",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 17,
+      "name": "Delivery",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 21,
+      "name": "Enc B",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 22,
+      "name": "Enc CDE",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 12,
+      "name": "F-Sector",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 23,
+      "name": "F1",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 24,
+      "name": "F2 F3",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 35,
+      "name": "G2",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 1,
+      "name": "Linac",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 25,
+      "name": "M01",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 26,
+      "name": "M02",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 27,
+      "name": "M03",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 28,
+      "name": "M04",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 29,
+      "name": "M05",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 34,
+      "name": "MB7",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 32,
+      "name": "MC6",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 33,
+      "name": "MC7",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 7,
+      "name": "MI10",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 5,
+      "name": "MI12A",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 6,
+      "name": "MI12B",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 8,
+      "name": "MI20-MI62",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 9,
+      "name": "MI65",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 4,
+      "name": "MI8",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 11,
+      "name": "MINOS Absorber",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 10,
+      "name": "MINOS Alcoves",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 30,
+      "name": "MT6-1",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 31,
+      "name": "MT6-2",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 2,
+      "name": "MTA",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 18,
+      "name": "Muon Extraction",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 19,
+      "name": "Muon MC1",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 36,
+      "name": "N01",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 37,
+      "name": "NM2",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 38,
+      "name": "NM3",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 39,
+      "name": "NM4",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 40,
+      "name": "NML",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 13,
+      "name": "Pre-Target",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 14,
+      "name": "Pre-Vault",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 20,
+      "name": "T-Hall",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 16,
+      "name": "Transport Mid",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    },
+    {
+      "id": 15,
+      "name": "Transport US/DS",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:28 AM"
+    }
+  ],
+  "getAllStatuses": [
+    {
+      "id": 3,
+      "name": "Controlled",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:27 AM"
+    },
+    {
+      "id": 5,
+      "name": "No Access",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:27 AM"
+    },
+    {
+      "id": 2,
+      "name": "Open",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:27 AM"
+    },
+    {
+      "id": 6,
+      "name": "Preparing",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:27 AM"
+    },
+    {
+      "id": 7,
+      "name": "Restricted",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:27 AM"
+    },
+    {
+      "id": 4,
+      "name": "Supervised",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:27 AM"
+    },
+    {
+      "id": 1,
+      "name": "Undefined",
+      "isActive": true,
+      "modifiedDate": "Apr 11, 2017 10:58:27 AM"
+    }
   ]
 }

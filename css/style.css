@@ -1,10 +1,15 @@
-@font-face { font-family: Vegur; src: url('../fonts/Vegur-Regular.otf'); }
+@font-face {
+  font-family: Vegur;
+  src: url('../fonts/Vegur-Regular.otf');
+}
+
 
 /* Variables */
+
 :root {
-  --bg-color: rgb(0,0,0);
-  --odd-row: rgb(18,18,18);
-  --even-row: rgb(26,26,26);
+  --bg-color: rgb(0, 0, 0);
+  --odd-row: rgb(18, 18, 18);
+  --even-row: rgb(26, 26, 26);
   --row-count: 13;
   --column-count: 3;
 }
@@ -20,10 +25,8 @@ body {
 }
 
 main {
-  height: 100%;
-  width: 100%;
   display: grid;
-  grid-template-columns: repeat(--column-count, 1fr);
+  grid-template-columns: repeat(var(--column-count), 1fr);
   grid-template-rows: repeat(var(--row-count), 1fr);
   grid-auto-flow: column;
 }
@@ -36,6 +39,12 @@ center {
   grid-row: -1;
 }
 
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1em;
+}
+
 .row:nth-child(odd) {
   background-color: var(--odd-row);
 }
@@ -44,56 +53,66 @@ center {
   background-color: var(--even-row);
 }
 
-.row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 1em;
-}
-
 .enclosure {
   text-align: right;
 }
 
+
 /* Status Colors */
+
 .undef {
-  color: rgb(255,255,255);
+  color: rgb(255, 255, 255);
 }
 
 .noacs {
-  color: rgb(237,29,4);
+  color: rgb(237, 29, 4);
 }
 
 .open {
-  color: rgb(0,255,255);
+  color: rgb(0, 255, 255);
 }
 
 .super {
-  color: rgb(0,255,0);
+  color: rgb(0, 255, 0);
 }
 
 .cntrl {
-  color: rgb(255,255,0);
+  color: rgb(255, 255, 0);
 }
 
-/* Updater */
-h2 {
+header {
   text-align: center;
 }
 
-#updaterContainer {
-  width: 500px;
-  margin: 0 auto;
-  text-align: center;
+header * {
+  margin: 0;
 }
 
-#updaterContainer > span {
-  width: 47%;
-  margin: .5% 1.5%;
-  color: white;
-  display: inline-block;
+.simple {
+  font-size: .8em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: none;
+  grid-auto-flow: row;
 }
 
-#updaterContainer > select {
-  width: 47%;
-  margin: .5% 1.5%;
+.simple>#statusContainer {
+  grid-row: auto;
+}
+
+.updater {
+  font-size: 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: none;
+  grid-auto-flow: row;
+  grid-gap: .3em;
+}
+
+.updater>#statusContainer {
+  grid-row: auto;
+}
+
+.updater>.row>select {
+  justify-self: start;
 }
